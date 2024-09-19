@@ -64,13 +64,24 @@ app.post('/login', (req, res) => {
   }
   console.log(data.input)
 
-  const check1 = db.query(`select * from sign_up where Email = "${data.Email}" and Password = "${data.Password}";`);
-  
-  if(check1 === null){
-    console.log("nodata found")
-  }else{
-    res.render("index")
+  db.query(`select * from sign_up where Email = "${data.Email}" and Password = "${data.Password}";` , (err, rows) =>{
+    rows.forEach((row) => {
+      console.log(`ID: ${row.Personid}, Name: ${row.Name}, Email: ${row.Email}, Password: ${row.Password}`)
+      let name = row.Name
+      if(name === null ){
+        console.log("no user found")
+        res.render('signup')
+       }
+       else{
+        res.render('index')
+       }
+      
+
+    });
   }
+);
+  
+ 
   
 
   
