@@ -69,12 +69,8 @@ app.post('/login', (req, res) => {
       console.log(`ID: ${row.Personid}, Name: ${row.Name}, Email: ${row.Email}, Password: ${row.Password}`)
       let name = row.Name
 
-      if(data.Email = "admin@gmail.com", data.Password = "root"){
-        res.render('admin')
-        console.log("admin")
-      }
-
-      else if(name === null ){
+   
+      if(name === null ){
         console.log("no user found")
         res.render('signup')
        }
