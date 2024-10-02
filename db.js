@@ -1,8 +1,7 @@
 const mysql = require('mysql');
 
 const db = mysql.createConnection({
-  host: 'locahost',
-  port: 3306,
+  host: 'localhost',
   user: 'root',
   password: 'root',
   database: 'ticket_crm'
