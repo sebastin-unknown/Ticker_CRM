@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  prom-server:
+    
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - D:/F/DevOps/Ticket_CRM/Ticker_CRM/prometheus-config.yml:/etc/prometheus/prometheus.yml

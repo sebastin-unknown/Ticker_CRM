@@ -3,7 +3,15 @@ const bodyParser = require("body-parser");
 const path = require('path')
 const app = express();
 const db = require('./db');
+const client = require('prom-client');
 
+const PORT = process.env.PORT || 3020
+
+const collectDefaultMetrics = client.collectDefaultMetrics;
+
+collectDefaultMetrics({register: client.registry})
+
+console.log(collectDefaultMetrics)
 
 app.use("/assets", express.static('assets'))
 app.set("view engine","ejs")
@@ -17,6 +25,11 @@ app.get('/', (req, res) => {
   res.render('signup');
 });
 
+app.get('/metrics', async (req, res) => {
+  res.setHeader("Content-Type",client.register.contentType)
+  const metrics = await client.register.metrics();
+  res.send(metrics);
+});
 
 
 console.log("before")
@@ -83,15 +96,39 @@ app.post('/login', (req, res) => {
     });
   }
 );
-  
  
-  
-
-  
 });
 
 
+// app.get("/slow", async (req, res) => {
+//   try {
+//   const timeTaken = await doSomeHeavyTask() ;
+//   return res.json({
+//    status: "Success",
+//    message: `Heavy task completed in ${timeTaken}ms `,
+//   })
+//   } catch (error) {
+//   return res
+//   . status (500)
+//   .json({ status:"Error" ,error:"Internat Server Error"})
+//   }
+// });
 
+
+app.get("/slow", async (req, res) => {
+
+  setTimeout(function() {
+    console.log("This will print after 10 seconds");
+  }, 10000);
+
+  
+  return res
+    
+    .json({ status:"hello" ,error:"Internat Server Error"})
+}
+
+ 
+);
 
 
 
@@ -100,12 +137,6 @@ app.get('/index', (req, res) => {
   res.render('index');
 });
 
-
-
-
-
-
-
-app.listen(3020, () => {
-  console.log('Server started on port 3020');
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
